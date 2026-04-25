@@ -1,7 +1,8 @@
 // Concept 01 — Editorial Cinema
-// Dark, cinematic, oversized serif. Awwwards-style.
+// Dark, oversized serif. Awwwards-style. Music-video / album-cover energy.
 
-import { ARCHIVE, CLIENTS, SELECTED, SHOWREEL_MP4, STUDIO, stockImage } from "@/lib/content";
+import { ARCHIVE, CLIENTS, SELECTED, SHOWREEL, STUDIO } from "@/lib/content";
+import VideoPlate from "@/components/VideoPlate";
 
 const C1 = {
   ink: "#0A0908",
@@ -11,89 +12,6 @@ const C1 = {
   boneFaint: "rgba(237,230,219,0.18)",
   ember: "#C9542B",
 };
-
-function C1Plate({
-  src,
-  ratio = "16/9",
-  label,
-  accent = false,
-  children,
-}: {
-  src: string;
-  ratio?: string;
-  label?: string;
-  accent?: boolean;
-  children?: React.ReactNode;
-}) {
-  return (
-    <div
-      style={{
-        aspectRatio: ratio,
-        position: "relative",
-        overflow: "hidden",
-        border: `1px solid ${C1.boneFaint}`,
-      }}
-    >
-      <img
-        src={src}
-        alt=""
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          filter: "saturate(0.85) contrast(1.05) brightness(0.85)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: accent
-            ? `repeating-linear-gradient(135deg, ${C1.ember}1f 0 6px, ${C1.ember}0a 6px 12px), linear-gradient(180deg, rgba(20,16,12,0.45), rgba(8,6,4,0.65))`
-            : "linear-gradient(180deg, rgba(10,9,8,0.35) 0%, rgba(10,9,8,0.55) 100%)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.25,
-          mixBlendMode: "overlay",
-          background:
-            "repeating-radial-gradient(circle at 33% 47%, rgba(255,255,255,0.04) 0 1px, transparent 1px 2px)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse 100% 90% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)",
-        }}
-      />
-      {label && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            fontFamily: "var(--font-mono)",
-            fontSize: 10,
-            letterSpacing: 0.5,
-            color: C1.boneDim,
-            padding: "10px 12px",
-            textTransform: "uppercase",
-          }}
-        >
-          {label}
-        </div>
-      )}
-      {children}
-    </div>
-  );
-}
 
 export default function Concept1() {
   return (
@@ -168,108 +86,150 @@ export default function Concept1() {
         </div>
       </header>
 
-      {/* HERO */}
-      <section style={{ padding: "80px clamp(20px, 5vw, 56px) 60px", position: "relative" }}>
+      {/* HERO — full-bleed video, oversized italic serif overlay */}
+      <section style={{ position: "relative", minHeight: "min(900px, 100vh)", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0 }}>
+          <VideoPlate ratio="auto" tone="ember" seed={101} vignette={false} />
+        </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            marginBottom: 56,
-            gap: 24,
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(10,9,8,0.55) 0%, rgba(10,9,8,0.25) 22%, rgba(10,9,8,0.5) 70%, rgba(10,9,8,0.85) 100%)",
+            pointerEvents: "none",
           }}
-        >
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: 1.5, color: C1.boneDim }}>
-            <div>(01) — INDEX, VOL. VII</div>
-            <div style={{ marginTop: 6 }}>SPRING / SUMMER 2026</div>
-          </div>
+        />
+
+        <div style={{ position: "relative", padding: "80px clamp(20px, 5vw, 56px) 60px" }}>
           <div
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              letterSpacing: 1.5,
-              color: C1.boneDim,
-              textAlign: "right",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              marginBottom: 56,
+              gap: 24,
             }}
           >
-            <div>A PHOTOGRAPHY &amp;</div>
-            <div>MOVING IMAGE PRACTICE</div>
-            <div style={{ marginTop: 6, color: C1.ember }}>↘ NOW BOOKING Q3</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: 1.5, color: C1.boneDim }}>
+              <div>(01) — INDEX, VOL. VII</div>
+              <div style={{ marginTop: 6 }}>SPRING / SUMMER 2026</div>
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: 1.5,
+                color: C1.boneDim,
+                textAlign: "right",
+              }}
+            >
+              <div>A PHOTOGRAPHY &amp;</div>
+              <div>MOVING IMAGE PRACTICE</div>
+              <div style={{ marginTop: 6, color: C1.ember }}>↘ NOW BOOKING Q3</div>
+            </div>
           </div>
-        </div>
 
-        <h1
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: "clamp(76px, 16vw, 220px)",
-            lineHeight: 0.92,
-            fontWeight: 400,
-            letterSpacing: "-0.04em",
-            margin: 0,
-            color: C1.bone,
-          }}
-        >
-          Pictures that
-          <br />
-          <span style={{ fontStyle: "italic", color: C1.bone }}>linger</span>
-          <span style={{ color: C1.ember }}>.</span>
-        </h1>
-
-        <div
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
-          style={{ marginTop: 64 }}
-        >
-          <p
+          <h1
             style={{
-              maxWidth: 460,
-              fontSize: "clamp(13px, 1.2vw, 16px)",
-              color: C1.boneDim,
-              lineHeight: 1.55,
+              fontFamily: "var(--font-serif)",
+              fontSize: "clamp(76px, 16vw, 220px)",
+              lineHeight: 0.92,
+              fontWeight: 400,
+              letterSpacing: "-0.04em",
               margin: 0,
+              color: C1.bone,
             }}
           >
-            Offbeat is the production studio of <span style={{ color: C1.bone }}>{STUDIO.director}</span> — a director and
-            photographer working with musicians, brands, and the occasional stranger. We make the kind of work people watch
-            twice.
-          </p>
-          <div style={{ display: "flex", gap: 14 }}>
-            <a
-              href="#showreel"
+            Pictures that
+            <br />
+            <span style={{ fontStyle: "italic", color: C1.bone }}>linger</span>
+            <span style={{ color: C1.ember }}>.</span>
+          </h1>
+
+          <div
+            className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+            style={{ marginTop: 64 }}
+          >
+            <p
               style={{
-                padding: "14px 22px",
-                border: `1px solid ${C1.bone}`,
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                letterSpacing: 1.5,
-                textTransform: "uppercase",
+                maxWidth: 460,
+                fontSize: "clamp(13px, 1.2vw, 16px)",
                 color: C1.bone,
-                textDecoration: "none",
+                lineHeight: 1.55,
+                margin: 0,
               }}
             >
-              Showreel · 2:14
-            </a>
-            <a
-              href={`mailto:${STUDIO.email}`}
-              style={{
-                padding: "14px 22px",
-                background: C1.ember,
-                color: C1.ink,
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                letterSpacing: 1.5,
-                textTransform: "uppercase",
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-            >
-              Inquire ↗
-            </a>
+              Offbeat is the production studio of <span style={{ color: C1.bone, fontWeight: 500 }}>{STUDIO.director}</span>{" "}
+              — a director and photographer working with musicians, brands, and the occasional stranger. We make the kind
+              of work people watch twice.
+            </p>
+            <div style={{ display: "flex", gap: 14 }}>
+              <a
+                href="#showreel"
+                style={{
+                  padding: "14px 22px",
+                  border: `1px solid ${C1.bone}`,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                  textTransform: "uppercase",
+                  color: C1.bone,
+                  textDecoration: "none",
+                  background: "rgba(10,9,8,0.4)",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                Showreel · 2:14
+              </a>
+              <a
+                href={`mailto:${STUDIO.email}`}
+                style={{
+                  padding: "14px 22px",
+                  background: C1.ember,
+                  color: C1.ink,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  letterSpacing: 1.5,
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                Inquire ↗
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* MARQUEE BAND — credit ticker */}
+      <div
+        style={{
+          borderBottom: `1px solid ${C1.boneFaint}`,
+          padding: "16px 0",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+          letterSpacing: 2,
+          color: C1.boneDim,
+          textTransform: "uppercase",
+        }}
+      >
+        <div className="marquee-track" style={{ display: "inline-flex" }}>
+          {Array.from({ length: 2 }).map((_, dup) => (
+            <span key={dup} style={{ paddingRight: 0 }}>
+              ✦ TIDES, ABLAZE — JUNO HALSEY ✦ INTERIORS, NO. 4 — MAREN ATELIER ✦ NIGHTSHIFT — FORM RECORDS ✦ NOW BOOKING
+              Q3 / Q4 2026 ✦ TIDES, ABLAZE — JUNO HALSEY ✦ INTERIORS, NO. 4 — MAREN ATELIER ✦ NIGHTSHIFT — FORM RECORDS
+              ✦ NOW BOOKING Q3 / Q4 2026 &nbsp;
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* SHOWREEL */}
-      <section id="showreel" style={{ padding: "0 clamp(20px, 5vw, 56px) 100px" }}>
+      <section id="showreel" style={{ padding: "80px clamp(20px, 5vw, 56px) 100px" }}>
         <div
           style={{
             aspectRatio: "21/9",
@@ -279,13 +239,13 @@ export default function Concept1() {
           }}
         >
           <video
-            src={SHOWREEL_MP4}
+            src={SHOWREEL.src}
+            poster={`https://picsum.photos/seed/${encodeURIComponent(SHOWREEL.poster)}/2100/900`}
             autoPlay
             muted
             loop
             playsInline
             preload="metadata"
-            poster={stockImage("offbeat-showreel-poster", 2100, 900)}
             style={{
               position: "absolute",
               inset: 0,
@@ -299,41 +259,10 @@ export default function Concept1() {
             style={{
               position: "absolute",
               inset: 0,
-              background: `repeating-linear-gradient(135deg, ${C1.ember}1f 0 6px, ${C1.ember}0a 6px 12px), linear-gradient(180deg, rgba(20,16,12,0.35), rgba(8,6,4,0.55))`,
+              background: `repeating-linear-gradient(135deg, ${C1.ember}1f 0 6px, ${C1.ember}0a 6px 12px), linear-gradient(180deg, rgba(20,16,12,0.25), rgba(8,6,4,0.4))`,
+              pointerEvents: "none",
             }}
           />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                width: 78,
-                height: 78,
-                borderRadius: 78,
-                border: `1.5px solid ${C1.bone}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderLeft: `16px solid ${C1.bone}`,
-                  borderTop: "11px solid transparent",
-                  borderBottom: "11px solid transparent",
-                  marginLeft: 4,
-                }}
-              />
-            </div>
-          </div>
           <div
             style={{
               position: "absolute",
@@ -341,7 +270,7 @@ export default function Concept1() {
               right: 16,
               fontFamily: "var(--font-mono)",
               fontSize: 10,
-              color: C1.boneDim,
+              color: C1.bone,
               letterSpacing: 1,
             }}
           >
@@ -354,16 +283,29 @@ export default function Concept1() {
               left: 16,
               fontFamily: "var(--font-mono)",
               fontSize: 10,
-              color: C1.boneDim,
+              color: C1.bone,
               letterSpacing: 1,
             }}
           >
             FRAME 00284 / 04020
           </div>
+          <div
+            style={{
+              position: "absolute",
+              bottom: 16,
+              left: 16,
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              color: C1.bone,
+              letterSpacing: 1,
+            }}
+          >
+            SHOWREEL.MOV · 02:14 · 4K · DIRECT
+          </div>
         </div>
       </section>
 
-      {/* INDEX (selected work, list-as-table) */}
+      {/* INDEX */}
       <section style={{ padding: "0 clamp(20px, 5vw, 56px) 80px" }}>
         <div
           style={{
@@ -371,6 +313,8 @@ export default function Concept1() {
             justifyContent: "space-between",
             alignItems: "baseline",
             marginBottom: 36,
+            flexWrap: "wrap",
+            gap: 12,
           }}
         >
           <h2
@@ -400,56 +344,55 @@ export default function Concept1() {
         {SELECTED.map((w, i) => (
           <div
             key={i}
-            className="grid"
+            className="grid grid-cols-[40px_1fr] md:grid-cols-[60px_1fr_240px_160px_80px]"
             style={{
-              gridTemplateColumns: "60px 1fr",
               gap: 20,
-              padding: "24px 0",
+              padding: "22px 0",
               borderTop: `1px solid ${C1.boneFaint}`,
               alignItems: "center",
             }}
           >
             <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: C1.boneDim }}>{w.n}</span>
-            <div
-              className="grid grid-cols-1 md:grid-cols-[1fr_240px_160px_80px]"
-              style={{ gap: 20, alignItems: "center" }}
+            <span
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "clamp(24px, 3.4vw, 38px)",
+                fontStyle: "italic",
+                letterSpacing: -0.5,
+                textTransform: "uppercase",
+              }}
             >
-              <span
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "clamp(24px, 3.4vw, 38px)",
-                  fontStyle: "italic",
-                  letterSpacing: -0.5,
-                  textTransform: "uppercase",
-                }}
-              >
-                {w.title}
-              </span>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C1.bone }}>
-                {w.client.toUpperCase()}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  color: C1.boneDim,
-                  letterSpacing: 1,
-                  textTransform: "uppercase",
-                }}
-              >
-                {w.kind}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  color: C1.boneDim,
-                }}
-                className="md:text-right"
-              >
-                {w.year} ↗
-              </span>
-            </div>
+              {w.title}
+            </span>
+            <span
+              className="hidden md:inline"
+              style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: C1.bone }}
+            >
+              {w.client.toUpperCase()}
+            </span>
+            <span
+              className="hidden md:inline"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: C1.boneDim,
+                letterSpacing: 1,
+                textTransform: "uppercase",
+              }}
+            >
+              {w.kind}
+            </span>
+            <span
+              className="hidden md:inline"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: C1.boneDim,
+                textAlign: "right",
+              }}
+            >
+              {w.year} ↗
+            </span>
           </div>
         ))}
         <div style={{ borderTop: `1px solid ${C1.boneFaint}` }} />
@@ -461,11 +404,7 @@ export default function Concept1() {
           className="grid grid-cols-1 lg:grid-cols-[5fr_3fr]"
           style={{ gap: 24, alignItems: "end" }}
         >
-          <C1Plate
-            src={stockImage(SELECTED[0].seed, 1400, 1050)}
-            ratio="4/3"
-            label={`${SELECTED[0].title.toUpperCase()} — STILL 014`}
-          />
+          <VideoPlate tone="ember" seed={SELECTED[0].seed} ratio="4/3" />
           <div>
             <div
               style={{
@@ -574,10 +513,7 @@ export default function Concept1() {
               <span style={{ color: C1.ember }}>good light</span> and the people who deserve it. Half the work is knowing
               when to put the camera down.
             </p>
-            <div
-              className="grid grid-cols-2 lg:grid-cols-4"
-              style={{ gap: 32, marginTop: 80 }}
-            >
+            <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 32, marginTop: 80 }}>
               {[
                 ["(01)", "DIRECTING", "Music videos, brand films, narrative shorts."],
                 ["(02)", "PHOTOGRAPHY", "Editorial, portraits, product, album art."],
@@ -638,8 +574,13 @@ export default function Concept1() {
         </div>
       </section>
 
-      {/* INDEX / ARCHIVE */}
-      <section style={{ padding: "60px clamp(20px, 5vw, 56px) 80px", borderTop: `1px solid ${C1.boneFaint}` }}>
+      {/* ARCHIVE */}
+      <section
+        style={{
+          padding: "60px clamp(20px, 5vw, 56px) 80px",
+          borderTop: `1px solid ${C1.boneFaint}`,
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -793,7 +734,7 @@ export default function Concept1() {
               <div>
                 <div style={{ color: C1.boneDim }}>STUDIO</div>
                 <div style={{ marginTop: 8, lineHeight: 1.7 }}>
-                  1149 W. 17th St, Studio C
+                  1149 W. 17th St
                   <br />
                   Costa Mesa, CA 92627
                 </div>

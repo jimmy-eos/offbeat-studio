@@ -4,9 +4,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const CONCEPTS = [
-  { id: "1", label: "Editorial Cinema", sub: "Awwwards · Oversized serif" },
-  { id: "2", label: "Cinematic Restraint", sub: "VYZN · Patient, image-first" },
-  { id: "3", label: "Oversized Portrait", sub: "Lurais · Type as frame" },
+  { id: "1", label: "Editorial Cinema" },
+  { id: "2", label: "Amber Studio" },
+  { id: "3", label: "Reel Grid" },
+  { id: "4", label: "Atelier Mono" },
 ];
 
 export default function ConceptSwitcher({ active }: { active: string }) {
@@ -15,12 +16,11 @@ export default function ConceptSwitcher({ active }: { active: string }) {
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "1" || e.key === "2" || e.key === "3") {
+      if (["1", "2", "3", "4"].includes(e.key)) {
         const target = e.target as HTMLElement | null;
         if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return;
-        const next = e.key;
         const sp = new URLSearchParams(params.toString());
-        sp.set("c", next);
+        sp.set("c", e.key);
         router.replace(`/?${sp.toString()}`, { scroll: false });
       }
     }
@@ -34,6 +34,10 @@ export default function ConceptSwitcher({ active }: { active: string }) {
     router.replace(`/?${sp.toString()}`, { scroll: false });
   }
 
+  // Concept 4 is on a paper (light) background; the others are dark. The pill
+  // detects active concept and adjusts its chrome so it stays legible on both.
+  const onLightBg = active === "4";
+
   return (
     <div
       style={{
@@ -42,15 +46,20 @@ export default function ConceptSwitcher({ active }: { active: string }) {
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 100,
-        background: "rgba(8, 8, 10, 0.78)",
-        border: "1px solid rgba(255,255,255,0.10)",
+        background: onLightBg ? "rgba(26, 24, 21, 0.92)" : "rgba(8, 8, 10, 0.78)",
+        border: onLightBg
+          ? "1px solid rgba(255,255,255,0.10)"
+          : "1px solid rgba(255,255,255,0.10)",
         backdropFilter: "blur(18px)",
         WebkitBackdropFilter: "blur(18px)",
         padding: 6,
         borderRadius: 999,
-        boxShadow: "0 24px 48px -16px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.04) inset",
+        boxShadow: onLightBg
+          ? "0 24px 48px -16px rgba(26,24,21,0.35), 0 1px 0 rgba(255,255,255,0.04) inset"
+          : "0 24px 48px -16px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.04) inset",
+        fontFamily: "var(--font-mono)",
+        maxWidth: "calc(100vw - 24px)",
       }}
-      className="font-mono"
     >
       <div style={{ display: "flex", alignItems: "stretch", gap: 4 }}>
         {CONCEPTS.map((c) => {
@@ -63,37 +72,27 @@ export default function ConceptSwitcher({ active }: { active: string }) {
               aria-pressed={isActive}
               style={{
                 position: "relative",
-                padding: "10px 18px",
+                padding: "10px 14px",
                 borderRadius: 999,
                 background: isActive ? "rgba(255,255,255,0.95)" : "transparent",
-                color: isActive ? "#0a0a0b" : "rgba(255,255,255,0.7)",
+                color: isActive ? "#0a0a0b" : "rgba(255,255,255,0.72)",
                 border: "none",
                 cursor: "pointer",
                 transition: "background 220ms ease, color 220ms ease",
                 fontFamily: "inherit",
                 fontSize: 11,
-                letterSpacing: 1.5,
+                letterSpacing: 1.4,
                 textTransform: "uppercase",
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
                 whiteSpace: "nowrap",
               }}
-              title={`${c.label} — ${c.sub}`}
+              title={c.label}
             >
+              <span style={{ fontSize: 10, fontWeight: 600, opacity: isActive ? 0.55 : 0.8 }}>/0{c.id}</span>
               <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  opacity: isActive ? 0.55 : 0.8,
-                }}
-              >
-                /0{c.id}
-              </span>
-              <span
-                style={{
-                  fontWeight: isActive ? 600 : 400,
-                }}
+                style={{ fontWeight: isActive ? 600 : 400 }}
                 className="hidden sm:inline"
               >
                 {c.label}
