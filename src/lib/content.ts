@@ -1,4 +1,4 @@
-// Shared content used across all four concept layouts.
+// Shared content used across the site.
 
 export const STUDIO = {
   name: "OFFBEAT",
@@ -17,163 +17,184 @@ export const STUDIO = {
   vimeoHandle: "/offbeatstudio",
 };
 
+// ---------------------------------------------------------------------------
+// Photo registry
+// All photos live in /public/photos. Slugs are stable IDs used by Concept2.
+// ---------------------------------------------------------------------------
+
+export type Photo = {
+  slug: string;
+  src: string;
+  alt: string;
+  w: number;
+  h: number;
+  orient: "L" | "P";
+};
+
+const photo = (slug: string, w: number, h: number, alt: string): Photo => ({
+  slug,
+  src: `/photos/${slug}.jpg`,
+  alt,
+  w,
+  h,
+  orient: w >= h ? "L" : "P",
+});
+
+export const PHOTOS = {
+  gymBackUs: photo("gym-back-us", 2400, 1600, "Boxer turned to the U.S. flag inside the gym"),
+  gymPortrait: photo("gym-portrait", 2400, 1992, "Boxer in a Muerto Generals tee, ring behind him"),
+  gymFront: photo("gym-front", 1389, 2400, "Boxer standing center-frame under flags inside the ring"),
+  gymBackMex: photo("gym-back-mex", 1306, 2400, "Boxer facing away, Mexican flag overhead"),
+  gymClose: photo("gym-close", 1600, 2400, "Tight portrait of the boxer beside the ropes"),
+  gymPair: photo("gym-pair", 1546, 2400, "Two boxers framed inside the gym"),
+  lionLeap: photo("lion-leap", 1600, 2400, "Lion dancer mid-leap, costume in full motion"),
+  lionTemple: photo("lion-temple", 1600, 2400, "Lion troupe gathered before the temple gate"),
+  lionCrowd: photo("lion-crowd", 1600, 2400, "Lion dance under string lights, lantern in foreground"),
+  yeeYingTong: photo("yee-ying-tong", 1600, 2400, "Yee Ying Tong association jacket, troupe member backstage"),
+  lantern: photo("lantern", 1600, 2400, "Painted festival lantern lit against the night"),
+  rushCover: photo("rush-cover", 720, 1280, "Two friends walking home under a streetlight"),
+  twentyCover: photo("twenty-cover", 720, 1280, "Engraved twenty-year anniversary plaque"),
+} as const;
+
+export type PhotoSlug = keyof typeof PHOTOS;
+
+// ---------------------------------------------------------------------------
+// Video registry — clips that loop in hero/feature slots. Posters are JPG
+// frames pulled at clip start so the still reads correctly before playback.
+// ---------------------------------------------------------------------------
+
+export type Video = {
+  slug: string;
+  src: string;
+  poster: string;
+  w: number;
+  h: number;
+  orient: "L" | "P";
+};
+
+const video = (slug: string, w: number, h: number): Video => ({
+  slug,
+  src: `/videos/${slug}.mp4`,
+  poster: `/videos/${slug}-poster.jpg`,
+  w,
+  h,
+  orient: w >= h ? "L" : "P",
+});
+
+export const VIDEOS = {
+  ygz: video("ygz", 1280, 960), // 4:3 — boxing documentary, "Yung Generalz"
+  rushSae: video("rush-sae", 720, 1280), // 9:16 — Rush, SAE short
+  tapa: video("tapa", 720, 1280), // 9:16 — Twenty, anniversary film
+} as const;
+
+export type VideoSlug = keyof typeof VIDEOS;
+
+// ---------------------------------------------------------------------------
+// Selected work — four pieces. Each project has a stable slug for routing,
+// a cover (photo or video), the photos shown in its detail page, and an
+// optional video for hero playback.
+// ---------------------------------------------------------------------------
+
 export type Project = {
+  slug: string;
   n: string;
   title: string;
   client: string;
   kind: string;
   year: string;
   meta?: string;
-  seed: string;
+  description: string;
+  cover: PhotoSlug;
+  video?: VideoSlug;
+  photos: PhotoSlug[];
 };
 
-// Selected work — six pieces from the last ~24 months (per v2 handoff)
 export const SELECTED: Project[] = [
   {
+    slug: "yung-generalz",
     n: "01",
-    title: "Tides, Ablaze",
-    client: "Juno Halsey · Form Records",
-    kind: "Music film",
-    year: "2025",
-    meta: "San Onofre · S16 + 35mm · 04:11",
-    seed: "tides-ablaze",
+    title: "Yung Generalz",
+    client: "Yung Generalz BC",
+    kind: "Documentary",
+    year: "2026",
+    meta: "Santa Ana · 4K + 35mm",
+    description:
+      "A documentary on Yung Generalz Boxing Club — the wrap-and-tape rituals, the coaches, the kids who show up because the gym shows up for them.",
+    cover: "gymBackUs",
+    video: "ygz",
+    photos: [
+      "gymBackUs",
+      "gymPortrait",
+      "gymFront",
+      "gymBackMex",
+      "gymClose",
+      "gymPair",
+    ],
   },
   {
+    slug: "su-rong",
     n: "02",
-    title: "Interiors, No. 4",
-    client: "Maren Atelier",
-    kind: "Brand film",
+    title: "Sư Rồng",
+    client: "Yee Ying Tong Association",
+    kind: "Cultural documentary",
     year: "2025",
-    meta: "Los Feliz · 35mm · 02:30",
-    seed: "interiors-04",
+    meta: "Little Saigon · digital",
+    description:
+      "Lunar new year with Yee Ying Tong — the lion troupe at full leap, the troupe members backstage, the lanterns burning past midnight on Bolsa.",
+    cover: "lionLeap",
+    photos: [
+      "lionLeap",
+      "lionTemple",
+      "lionCrowd",
+      "yeeYingTong",
+      "lantern",
+    ],
   },
   {
+    slug: "rush",
     n: "03",
-    title: "Nightshift",
-    client: "Form Records · The Halflight",
-    kind: "Music video",
-    year: "2024",
-    meta: "Long Beach · Digital · 03:48",
-    seed: "nightshift",
-  },
-  {
-    n: "04",
-    title: "Soft Machinery",
-    client: "Kestrel Denim",
-    kind: "Campaign",
-    year: "2024",
-    meta: "14 frames + 16mm motion",
-    seed: "soft-machinery",
-  },
-  {
-    n: "05",
-    title: "Orange County, 4 a.m.",
-    client: "Self-initiated",
+    title: "Rush",
+    client: "Sigma Alpha Epsilon",
     kind: "Short film",
-    year: "2024",
-    meta: "OC · 35mm · 12:08",
-    seed: "orange-county-4am",
+    year: "2025",
+    meta: "Costa Mesa · 9:16 · 00:47",
+    description:
+      "A short, vertical-format film cut for the SAE rush week — two friends walking home in the dark, a streetlight, a closing door.",
+    cover: "rushCover",
+    video: "rushSae",
+    photos: [],
   },
   {
-    n: "06",
-    title: "Glasswork",
-    client: "Nordlys Ceramics",
-    kind: "Product film",
-    year: "2023",
-    meta: "Studio · 35mm · 01:54",
-    seed: "glasswork",
+    slug: "twenty",
+    n: "04",
+    title: "Twenty",
+    client: "Đoàn Lân Sư Rồng",
+    kind: "Anniversary film",
+    year: "2025",
+    meta: "Garden Grove · 9:16 · 02:10",
+    description:
+      "Cut for the troupe's twentieth-anniversary banquet — engraved plaques, stitched silk, twenty years of muscle memory in slow motion.",
+    cover: "twentyCover",
+    video: "tapa",
+    photos: [],
   },
 ];
 
-export const ARCHIVE: Project[] = [
-  { n: "07", title: "Halfway House", client: "A24 (test)", kind: "Narrative", year: "2023", seed: "halfway-house" },
-  { n: "08", title: "Topo × Halfway", client: "Topo Designs", kind: "Campaign", year: "2023", seed: "topo-halfway" },
-  { n: "09", title: "Slow Garden", client: "Slow Garden Roasters", kind: "Brand Film", year: "2022", seed: "slow-garden" },
-  { n: "10", title: "The Quiet Coast", client: "KCRW", kind: "Editorial", year: "2022", seed: "quiet-coast" },
-  { n: "11", title: "Letters Home", client: "Postscript", kind: "Brand Film", year: "2021", seed: "letters-home" },
-  { n: "12", title: "Foundry, Late", client: "Foundry Bicycle Co.", kind: "Product Film", year: "2021", seed: "foundry-late" },
-];
+export function getProject(slug: string): Project | undefined {
+  return SELECTED.find((p) => p.slug === slug);
+}
+
+export const PROJECT_SLUGS = SELECTED.map((p) => p.slug);
 
 export const CLIENTS = [
-  "A24",
+  "Yung Generalz BC",
+  "Yee Ying Tong Association",
+  "Đoàn Lân Sư Rồng",
+  "Sigma Alpha Epsilon",
+  "Westside Boxing Club",
+  "Bolsa Cultural Center",
   "Form Records",
-  "Foundry Bicycle Co.",
-  "Halfway House",
-  "Juno Halsey",
   "KCRW",
-  "Kestrel Denim",
-  "Maren Atelier",
-  "Nordlys Ceramics",
-  "Postscript",
   "Slow Garden Roasters",
   "Topo Designs",
 ];
-
-// Stock images — Lorem Picsum with deterministic seeds.
-export function stockImage(seed: string, w: number, h: number) {
-  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`;
-}
-
-// ---------------------------------------------------------------------------
-// Stock videos
-// All hosted on free CC0 / open-license CDNs (Mixkit + Pexels). Each entry is
-// a well-cropped cinematic clip suitable for a moody film-studio aesthetic.
-// Verified to serve Range requests (HTTP 206) — required for streaming <video>.
-// ---------------------------------------------------------------------------
-
-export type StockVideo = {
-  src: string;
-  poster: string; // poster image seed for picsum
-};
-
-const mixkit = (id: number, posterSeed: string): StockVideo => ({
-  src: `https://assets.mixkit.co/videos/${id}/${id}-720.mp4`,
-  poster: posterSeed,
-});
-
-const pexels = (id: number, quality: string, posterSeed: string): StockVideo => ({
-  src: `https://videos.pexels.com/video-files/${id}/${id}-${quality}.mp4`,
-  poster: posterSeed,
-});
-
-// Curated — 16 verified clips. Mix of Mixkit (smaller, faster) + Pexels (richer
-// HD). Adjacent seeds will pull different clips so the page doesn't look
-// repetitive.
-export const STOCK_VIDEOS: StockVideo[] = [
-  mixkit(4837, "v-4837"),
-  mixkit(5028, "v-5028"),
-  mixkit(5172, "v-5172"),
-  mixkit(5187, "v-5187"),
-  mixkit(6045, "v-6045"),
-  mixkit(6049, "v-6049"),
-  mixkit(6147, "v-6147"),
-  mixkit(6391, "v-6391"),
-  mixkit(7035, "v-7035"),
-  mixkit(7036, "v-7036"),
-  mixkit(8243, "v-8243"),
-  mixkit(9103, "v-9103"),
-  mixkit(13127, "v-13127"),
-  mixkit(16927, "v-16927"),
-  pexels(5752729, "hd_1920_1080_30fps", "v-5752729"),
-  pexels(1721294, "hd_1920_1080_25fps", "v-1721294"),
-  pexels(2034115, "hd_1920_1080_30fps", "v-2034115"),
-  pexels(1739010, "hd_1920_1080_30fps", "v-1739010"),
-];
-
-function hashSeed(seed: string | number): number {
-  if (typeof seed === "number") return Math.abs(seed);
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) {
-    h = (h * 31 + seed.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
-
-export function stockVideo(seed: string | number, offset = 0): StockVideo {
-  const idx = (hashSeed(seed) + offset) % STOCK_VIDEOS.length;
-  return STOCK_VIDEOS[idx];
-}
-
-// Hero showreel — the most prominent clip on each concept's hero. Verified
-// substantial Pexels HD clip (~14MB).
-export const SHOWREEL: StockVideo = pexels(1721294, "hd_1920_1080_25fps", "showreel-poster");
